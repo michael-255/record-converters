@@ -1,0 +1,47 @@
+# Fitness converter results
+ft-v13-to-v14-converted-*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Build files
+node_modules
+dist
+dist-ssr
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Test suite files
+coverage
+/cypress/videos/
+/cypress/screenshots/
+
+# Editor directories and files
+# .vscode/* # Leaving .vscode on purpose
+# !.vscode/extensions.json # Leaving .vscode on purpose
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# dotenv environment variables file
+.env
+.env.test
+*.local
