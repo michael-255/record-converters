@@ -1,23 +1,25 @@
-const { v4: createId } = require("uuid");
+const { v4 } = require("uuid");
 const fs = require("fs");
 
 module.exports = {
   /**
-   * Creates v4 uuid string
+   * Read JSON input file
    */
-  uuid() {
-    return createId();
+  readFile(inputFile = "test.json") {
+    try {
+      const fileName = inputFile;
+      const fileData = JSON.parse(fs.readFileSync(`input/${fileName}`, "utf8"));
+      return fileData;
+    } catch (error) {
+      console.error(
+        `ERROR: The file "${inputFile}" could not be found. Check the input folder.`
+      );
+      throw new Error("Stopping Execution");
+    }
   },
 
   /**
-   * Generic read
-   */
-  readFile(fileName) {
-    return JSON.parse(fs.readFileSync(`input/${fileName}`, "utf8"));
-  },
-
-  /**
-   * Generic write
+   * Write JSON output file
    */
   writeFile(fileName, fileData) {
     const trailingId = Math.random().toString(36).substring(2, 7).toUpperCase();
@@ -27,8 +29,15 @@ module.exports = {
 
     fs.writeFile(preppedName, preppedData, function (err) {
       if (err) return console.log(err);
-      console.log(`Finished writing file: ${preppedName}`);
+      console.log(`Finished writing file: "~/${preppedName}"`);
     });
+  },
+
+  /**
+   * Creates v4 uuid string
+   */
+  uuid() {
+    return v4();
   },
 
   /**

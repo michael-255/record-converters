@@ -1,30 +1,19 @@
 const utils = require("./utils");
 
-const allConvertedRecords = {};
-
 /**
- * REQUIRED: Valid JSON file to read record data from!
+ * REQUIRED
  */
-function getFileData(inputFile = "ft-v13-export-2022-10-25.json") {
-  try {
-    const fullFileNameToConvert = inputFile;
-    const fileData = utils.readFile(fullFileNameToConvert);
-    return fileData;
-  } catch (error) {
-    console.error(
-      `ERROR: The file "${inputFile}" could not be found. Check the input folder.`
-    );
-    throw new Error("Stopping Execution");
-  }
-}
+const globals = {
+  inputFileName: "ft-v13-export-2022-10-25.json",
+  allConvertedRecords: {},
+};
 
-/**
- * #################################################################################################
+/***************************************************************************************************
  * Measurement Records
- * #################################################################################################
- */
+ **************************************************************************************************/
 function convertMeasurementRecords() {
-  const measurementRecords = getFileData()?.measurementRecords || [];
+  const measurementRecords =
+    utils.readFile(globals.inputFileName)?.measurementRecords || [];
 
   // Original Record Fields
   // {
@@ -62,16 +51,15 @@ function convertMeasurementRecords() {
     }
   });
 
-  allConvertedRecords.measurementRecords = convertedRecords;
+  globals.allConvertedRecords.measurementRecords = convertedRecords;
 }
 
-/**
- * #################################################################################################
+/***************************************************************************************************
  * Exercise Records
- * #################################################################################################
- */
+ **************************************************************************************************/
 function convertExerciseRecords() {
-  const exerciseRecords = getFileData()?.exerciseRecords || [];
+  const exerciseRecords =
+    utils.readFile(globals.inputFileName)?.exerciseRecords || [];
 
   // Original Record Fields
   // {
@@ -124,16 +112,15 @@ function convertExerciseRecords() {
     }
   });
 
-  allConvertedRecords.exerciseRecords = convertedRecords;
+  globals.allConvertedRecords.exerciseRecords = convertedRecords;
 }
 
-/**
- * #################################################################################################
+/***************************************************************************************************
  * Workout Records
- * #################################################################################################
- */
+ **************************************************************************************************/
 function convertWorkoutRecords() {
-  const workoutRecords = getFileData()?.workoutRecords || [];
+  const workoutRecords =
+    utils.readFile(globals.inputFileName)?.workoutRecords || [];
 
   // Original Record Fields
   // {
@@ -160,7 +147,7 @@ function convertWorkoutRecords() {
     const exerciseRecordIds = [];
 
     // Find related exercise record ids
-    allConvertedRecords.exerciseRecords.forEach((er) => {
+    globals.allConvertedRecords.exerciseRecords.forEach((er) => {
       const exerciseDate = new Date(er.createdDate).getTime(); // integar time
 
       if (
@@ -188,7 +175,7 @@ function convertWorkoutRecords() {
     }
   });
 
-  allConvertedRecords.workoutRecords = convertedRecords;
+  globals.allConvertedRecords.workoutRecords = convertedRecords;
 }
 
 /**
@@ -198,9 +185,9 @@ function consoleOutput() {
   convertMeasurementRecords();
   convertExerciseRecords();
   convertWorkoutRecords();
-  console.log(allConvertedRecords.measurementRecords);
-  console.log(allConvertedRecords.exerciseRecords);
-  console.log(allConvertedRecords.workoutRecords);
+  console.log(globals.allConvertedRecords.measurementRecords);
+  console.log(globals.allConvertedRecords.exerciseRecords);
+  console.log(globals.allConvertedRecords.workoutRecords);
 }
 
 /**
@@ -212,15 +199,15 @@ function fileOutput() {
   convertWorkoutRecords();
   utils.writeFile(
     "ft-v13-converted-measurement-records",
-    allConvertedRecords.measurementRecords
+    globals.allConvertedRecords.measurementRecords
   );
   utils.writeFile(
     "ft-v13-converted-exercise-records",
-    allConvertedRecords.exerciseRecords
+    globals.allConvertedRecords.exerciseRecords
   );
   utils.writeFile(
     "ft-v13-converted-workout-records",
-    allConvertedRecords.workoutRecords
+    globals.allConvertedRecords.workoutRecords
   );
 }
 
