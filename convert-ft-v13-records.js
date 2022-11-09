@@ -6,6 +6,7 @@ const utils = require("./utils");
 const globals = {
   inputFileName: "ft-v13-export-2022-10-25.json",
   allConvertedRecords: {},
+  skippedRecords: {},
 };
 
 /***************************************************************************************************
@@ -27,6 +28,7 @@ function convertMeasurementRecords() {
   // }
 
   const convertedRecords = [];
+  globals.skippedRecords.measurementRecords = [];
 
   measurementRecords.forEach((record) => {
     // New Record Fields
@@ -40,7 +42,7 @@ function convertMeasurementRecords() {
       parentId === "MISSING" ||
       measurementValue === "MISSING"
     ) {
-      // console.log("Skipping record with missing values:", record);
+      globals.skippedRecords.measurementRecords.push(record); // Skipped
     } else {
       convertedRecords.push({
         id,
@@ -81,6 +83,7 @@ function convertExerciseRecords() {
   // }
 
   const convertedRecords = [];
+  globals.skippedRecords.exerciseRecords = [];
 
   exerciseRecords.forEach((record) => {
     // New Record Fields
@@ -95,12 +98,12 @@ function convertExerciseRecords() {
       .filter((i) => i);
 
     if (
-      createdDate === "MISSING" ||
-      parentId === "MISSING" ||
+      createdDate === null ||
+      parentId === null ||
       weight.length === 0 ||
       reps.length === 0
     ) {
-      // console.log("Skipping record with missing values:", record);
+      globals.skippedRecords.exerciseRecords.push(record); // Skipped
     } else {
       convertedRecords.push({
         id,
@@ -135,15 +138,16 @@ function convertWorkoutRecords() {
   // }
 
   const convertedRecords = [];
+  globals.skippedRecords.workoutRecords = [];
 
   workoutRecords.forEach((record) => {
     // New Record Fields
     const id = utils.uuid();
     const createdDate = new Date(record.createdAt).toISOString() || "MISSING";
     const parentId = utils.valueToIdTranslation(record.actionName) || "MISSING";
-    const finishedDate = new Date(
-      record.endedAt || record.createdAt + 2700000 // 45 minutes if we don't know the time
-    ).toISOString();
+    const finishedDate = record.endedAt
+      ? new Date(record.endedAt).toISOString()
+      : null;
     const exerciseRecordIds = [];
 
     // Find related exercise record ids
@@ -163,7 +167,7 @@ function convertWorkoutRecords() {
       parentId === "MISSING" ||
       exerciseRecordIds.length === 0
     ) {
-      console.log("Skipping record with missing values:", record);
+      globals.skippedRecords.workoutRecords.push(record); // Skipped
     } else {
       convertedRecords.push({
         id,
@@ -185,9 +189,26 @@ function consoleOutput() {
   convertMeasurementRecords();
   convertExerciseRecords();
   convertWorkoutRecords();
-  console.log(globals.allConvertedRecords.measurementRecords);
-  console.log(globals.allConvertedRecords.exerciseRecords);
-  console.log(globals.allConvertedRecords.workoutRecords);
+
+  const printConvertedRecords = () => {
+    const { measurementRecords, exerciseRecords, workoutRecords } =
+      globals.allConvertedRecords;
+
+    console.log("Measurement Records:", measurementRecords);
+    console.log("Exercise Records:", exerciseRecords);
+    console.log("Workout Records:", workoutRecords);
+  };
+  printConvertedRecords();
+
+  const printSkippedRecords = () => {
+    const { measurementRecords, exerciseRecords, workoutRecords } =
+      globals.skippedRecords;
+
+    console.log("(Skipped) Measurement Records:", measurementRecords);
+    console.log("(Skipped) Exercise Records:", exerciseRecords);
+    console.log("(Skipped) Workout Records:", workoutRecords);
+  };
+  printSkippedRecords();
 }
 
 /**
