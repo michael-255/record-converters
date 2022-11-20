@@ -99,8 +99,8 @@ function convertExerciseRecords() {
       .filter((i) => i);
 
     if (
-      createdDate === null ||
-      parentId === null ||
+      createdDate === "MISSING" ||
+      parentId === "MISSING" ||
       weight.length === 0 ||
       reps.length === 0
     ) {
