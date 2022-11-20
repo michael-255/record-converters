@@ -222,7 +222,7 @@ function fileOutput() {
 
   if (globals.allInOneOutput) {
     // All in one file
-    utils.writeFile("ft-v13-converted-workout-records", {
+    utils.writeFile("ft-v13-all-converted-records", {
       measurementRecords: globals.allConvertedRecords.measurementRecords,
       exerciseRecords: globals.allConvertedRecords.exerciseRecords,
       workoutRecords: globals.allConvertedRecords.workoutRecords,
