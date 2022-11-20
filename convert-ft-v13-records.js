@@ -218,18 +218,15 @@ function fileOutput() {
   convertMeasurementRecords();
   convertExerciseRecords();
   convertWorkoutRecords();
-  utils.writeFile(
-    "ft-v13-converted-measurement-records",
-    globals.allConvertedRecords.measurementRecords
-  );
-  utils.writeFile(
-    "ft-v13-converted-exercise-records",
-    globals.allConvertedRecords.exerciseRecords
-  );
-  utils.writeFile(
-    "ft-v13-converted-workout-records",
-    globals.allConvertedRecords.workoutRecords
-  );
+  utils.writeFile("ft-v13-converted-measurement-records", {
+    measurementRecords: globals.allConvertedRecords.measurementRecords,
+  });
+  utils.writeFile("ft-v13-converted-exercise-records", {
+    exerciseRecords: globals.allConvertedRecords.exerciseRecords,
+  });
+  utils.writeFile("ft-v13-converted-workout-records", {
+    workoutRecords: globals.allConvertedRecords.workoutRecords,
+  });
 }
 
 /**
