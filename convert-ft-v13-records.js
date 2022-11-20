@@ -4,7 +4,8 @@ const utils = require("./utils");
  * REQUIRED
  */
 const globals = {
-  inputFileName: "ft-v13-export-2022-10-25.json",
+  inputFileName: "ft-v13-export-2022-11-20.json",
+  allInOneOutput: true, // change if you want seperate files
   allConvertedRecords: {},
   skippedRecords: {},
 };
@@ -218,15 +219,26 @@ function fileOutput() {
   convertMeasurementRecords();
   convertExerciseRecords();
   convertWorkoutRecords();
-  utils.writeFile("ft-v13-converted-measurement-records", {
-    measurementRecords: globals.allConvertedRecords.measurementRecords,
-  });
-  utils.writeFile("ft-v13-converted-exercise-records", {
-    exerciseRecords: globals.allConvertedRecords.exerciseRecords,
-  });
-  utils.writeFile("ft-v13-converted-workout-records", {
-    workoutRecords: globals.allConvertedRecords.workoutRecords,
-  });
+
+  if (globals.allInOneOutput) {
+    // All in one file
+    utils.writeFile("ft-v13-converted-workout-records", {
+      measurementRecords: globals.allConvertedRecords.measurementRecords,
+      exerciseRecords: globals.allConvertedRecords.exerciseRecords,
+      workoutRecords: globals.allConvertedRecords.workoutRecords,
+    });
+  } else {
+    // Each in seperate files
+    utils.writeFile("ft-v13-converted-measurement-records", {
+      measurementRecords: globals.allConvertedRecords.measurementRecords,
+    });
+    utils.writeFile("ft-v13-converted-exercise-records", {
+      exerciseRecords: globals.allConvertedRecords.exerciseRecords,
+    });
+    utils.writeFile("ft-v13-converted-workout-records", {
+      workoutRecords: globals.allConvertedRecords.workoutRecords,
+    });
+  }
 }
 
 /**
