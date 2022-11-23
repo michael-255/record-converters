@@ -4,7 +4,7 @@ const utils = require("./utils");
  * REQUIRED
  */
 const globals = {
-  inputFileName: "ft-v13-export-2022-11-20.json",
+  inputFileName: "ft-v13-export-2022-11-22.json",
   allInOneOutput: true, // change if you want seperate files
   allConvertedRecords: {},
   skippedRecords: {},
@@ -222,20 +222,20 @@ function fileOutput() {
 
   if (globals.allInOneOutput) {
     // All in one file
-    utils.writeFile("ft-v13-all-converted-records", {
+    utils.writeFile("ft-v13-output-all-records", {
       measurementRecords: globals.allConvertedRecords.measurementRecords,
       exerciseRecords: globals.allConvertedRecords.exerciseRecords,
       workoutRecords: globals.allConvertedRecords.workoutRecords,
     });
   } else {
     // Each in seperate files
-    utils.writeFile("ft-v13-converted-measurement-records", {
+    utils.writeFile("ft-v13-output-measurement-records", {
       measurementRecords: globals.allConvertedRecords.measurementRecords,
     });
-    utils.writeFile("ft-v13-converted-exercise-records", {
+    utils.writeFile("ft-v13-output-exercise-records", {
       exerciseRecords: globals.allConvertedRecords.exerciseRecords,
     });
-    utils.writeFile("ft-v13-converted-workout-records", {
+    utils.writeFile("ft-v13-output-workout-records", {
       workoutRecords: globals.allConvertedRecords.workoutRecords,
     });
   }
