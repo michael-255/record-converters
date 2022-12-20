@@ -32,7 +32,7 @@ function convertExerciseParents() {
     // New Parent Fields
     const type = "Exercise-Parent";
     const id = parent.id;
-    const createdTimestamp = 1325394000000;
+    const createdTimestamp = 1546318800000;
     const parentStatus = "Enabled";
     const name = parent.name;
     const description = "TODO DESCRIPTION";
